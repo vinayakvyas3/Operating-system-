@@ -1,0 +1,101 @@
+import java.util.Scanner;
+
+
+
+public class PriorityWithoutArrivalTime {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+
+
+        System.out.print("Enter the number of processes: ");
+
+        int n = sc.nextInt();
+
+
+
+        int[] burstTime = new int[n];
+
+        int[] priority = new int[n];
+
+        int[] waitingTime = new int[n];
+
+        int[] turnaroundTime = new int[n];
+
+
+
+        System.out.println("Enter burst times and priorities for each process:");
+
+        for (int i = 0; i < n; i++) {
+
+            burstTime[i] = sc.nextInt();
+
+            priority[i] = sc.nextInt();
+
+        }
+
+
+
+        for (int i = 0; i < n - 1; i++) {
+
+            for (int j = 0; j < n - i - 1; j++) {
+
+                if (priority[j] > priority[j + 1]) {
+
+                    
+
+                    int tempPriority = priority[j];
+
+                    priority[j] = priority[j + 1];
+
+                    priority[j + 1] = tempPriority;
+
+
+
+                    
+
+                    int tempBurst = burstTime[j];
+
+                    burstTime[j] = burstTime[j + 1];
+
+                    burstTime[j + 1] = tempBurst;
+
+                }
+
+            }
+
+        }
+
+
+
+        int totalWaitingTime = 0;
+
+        for (int i = 0; i < n; i++) {
+
+            totalWaitingTime += burstTime[i];
+
+            waitingTime[i] = totalWaitingTime - burstTime[i];
+
+            turnaroundTime[i] = totalWaitingTime;
+
+        }
+
+
+
+        System.out.println("\nProcess\tBurst Time\tPriority\tWaiting Time\tTurnaround Time");
+
+        for (int i = 0; i < n; i++) {
+
+            System.out.println("P" + i + "\t" + burstTime[i] + "\t\t" + priority[i] + "\t\t" + waitingTime[i] + "\t\t" + turnaroundTime[i]);
+
+        }
+
+
+
+        sc.close();
+
+    }
+
+}
