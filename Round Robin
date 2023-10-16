@@ -1,0 +1,103 @@
+import java.util.LinkedList;
+
+import java.util.Queue;
+
+
+
+public class RoundRobinWithArrivalTime {
+
+    public static void main(String[] args) {
+
+        int[] process = {0, 1, 2, 3}; // Process IDs
+
+        int[] burstTime = {8, 6, 4, 2}; // Burst times
+
+        int[] arrivalTime = {0, 1, 2, 3}; // Arrival times
+
+
+
+        int quantum = 2; // Time quantum
+
+
+
+        roundRobin(process, burstTime, arrivalTime, quantum);
+
+    }
+
+
+
+    static void roundRobin(int[] process, int[] burstTime, int[] arrivalTime, int quantum) {
+
+        int n = process.length;
+
+        Queue<Integer> queue = new LinkedList<>();
+
+        int[] remainingTime = new int[n];
+
+
+
+        for (int i = 0; i < n; i++) {
+
+            remainingTime[i] = burstTime[i];
+
+        }
+
+
+
+        int currentTime = 0;
+
+        int[] waitingTime = new int[n];
+
+
+
+        System.out.println("Process\tWaiting Time");
+
+
+
+        while (true) {
+
+            boolean done = true;
+
+            for (int i = 0; i < n; i++) {
+
+                if (arrivalTime[i] <= currentTime && remainingTime[i] > 0) {
+
+                    done = false;
+
+                    if (remainingTime[i] <= quantum) {
+
+                        currentTime += remainingTime[i];
+
+                        waitingTime[i] = currentTime - burstTime[i] - arrivalTime[i];
+
+                        remainingTime[i] = 0;
+
+                    } else {
+
+                        currentTime += quantum;
+
+                        remainingTime[i] -= quantum;
+
+                    }
+
+                }
+
+            }
+
+            if (done)
+
+                break;
+
+        }
+
+
+
+        for (int i = 0; i < n; i++) {
+
+            System.out.println("P" + i + "\t" + waitingTime[i]);
+
+        }
+
+    }
+
+}
